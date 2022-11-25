@@ -1,25 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    const [pokemon, setPokemon] = useState('')
+    const [pokemonD, setPokemonD] = useState({ sprites: { front_default: null } })
 
+    const onchangefn = (event) => {
+        setPokemon(event.target.value)
+    }
+    const onclickfn = () => {
+        //setPokemon( { label:pokemon})
+        console.log(pokemon, "https://pokeapi.co/api/v2/pokemon/" + pokemon )
+        fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon )
+            .then(response => response.json())
+            .then(
+                (pokemonData) => {
+                    console.log(pokemonData)
+                    setPokemonD(pokemonData)
+                }
+            )
+    }
+    return (
+        <>
+            <div className="App text-center" >
+                <h1>Busca tú pokemon</h1>
+                <input type="text" value={pokemon} onChange={onchangefn} />
+                <button type="" className="btn btn-light" onClick={onclickfn}>Buscar</button>
+<br></br>
+                <img src={pokemonD.sprites.front_default}></img>
+                <img src={pokemonD.sprites.back_default}></img>
+
+                <h2>{pokemonD.name}</h2>
+            </div>
+        </>
+    );
+}
 export default App;
